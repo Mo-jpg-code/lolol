@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Aurora Test OS</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="desktop">
+    <header class="top-bar">
+      <div class="status-left">
+        <span class="apple"></span>
+        <span class="menu">Aurora OS</span>
+        <span class="menu">Storage Lab</span>
+        <span class="menu">Window</span>
+        <span class="menu">Help</span>
+      </div>
+      <div class="status-right">
+        <span id="status-time"></span>
+      </div>
+    </header>
+
+    <main class="workspace">
+      <section class="window storage-lab">
+        <div class="window-header">
+          <div class="window-controls">
+            <span class="control close"></span>
+            <span class="control minimize"></span>
+            <span class="control maximize"></span>
+          </div>
+          <h1>Storage Lab</h1>
+        </div>
+        <div class="window-body">
+          <div class="panels">
+            <div class="panel create-drive">
+              <h2>Create Virtual Drive</h2>
+              <form id="drive-form">
+                <label>
+                  Drive name
+                  <input type="text" id="drive-name" placeholder="e.g. Test Volume" required />
+                </label>
+                <label>
+                  Capacity (GB)
+                  <input type="number" id="drive-capacity" min="1" max="2048" value="64" required />
+                </label>
+                <button type="submit" class="primary">Create Drive</button>
+              </form>
+            </div>
+
+            <div class="panel drive-list">
+              <div class="panel-header">
+                <h2>Virtual Drives</h2>
+                <button id="reset-drives" class="ghost">Reset Lab</button>
+              </div>
+              <div id="drive-empty" class="empty-state">
+                <p>No drives yet. Create one to begin testing.</p>
+              </div>
+              <div id="drive-container" class="drives"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="widget system-monitor">
+        <h2>System Monitor</h2>
+        <div class="monitor-grid">
+          <div class="metric">
+            <span class="label">Total Drives</span>
+            <span class="value" id="total-drives">0</span>
+          </div>
+          <div class="metric">
+            <span class="label">Total Capacity</span>
+            <span class="value" id="total-capacity">0 GB</span>
+          </div>
+          <div class="metric">
+            <span class="label">Total Used</span>
+            <span class="value" id="total-used">0 GB</span>
+          </div>
+          <div class="metric">
+            <span class="label">Free Space</span>
+            <span class="value" id="total-free">0 GB</span>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="dock">
+      <button class="dock-item" id="new-stress-test">🚀<span>Stress Test</span></button>
+      <button class="dock-item" id="new-drive">💽<span>New Drive</span></button>
+      <button class="dock-item" id="open-notes">📝<span>Notes</span></button>
+    </footer>
+  </div>
+
+  <div class="modal hidden" id="drive-modal">
+    <div class="modal-content">
+      <header class="modal-header">
+        <h2 id="modal-title">Drive Inspector</h2>
+        <button class="close-button" id="close-modal">✕</button>
+      </header>
+      <section class="modal-body">
+        <div class="drive-overview">
+          <div>
+            <h3>Usage</h3>
+            <div class="progress">
+              <div class="progress-fill" id="modal-progress"></div>
+            </div>
+            <div class="usage-values">
+              <span id="modal-used">0 GB used</span>
+              <span id="modal-free">0 GB free</span>
+            </div>
+          </div>
+          <div class="actions">
+            <button class="primary" id="add-file">Add File</button>
+            <button class="ghost" id="run-test">Run Stress Test</button>
+            <button class="danger" id="wipe-drive">Wipe Drive</button>
+          </div>
+        </div>
+        <div class="file-table">
+          <table>
+            <thead>
+              <tr>
+                <th>File Name</th>
+                <th>Size (GB)</th>
+                <th>Type</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="file-rows"></tbody>
+          </table>
+          <div id="file-empty" class="empty-state">
+            <p>No files stored yet. Add one to simulate a write.</p>
+          </div>
+        </div>
+        <section class="log">
+          <header>
+            <h3>Test Log</h3>
+            <button id="clear-log" class="ghost">Clear Log</button>
+          </header>
+          <ul id="log-entries"></ul>
+        </section>
+      </section>
+    </div>
+  </div>
+
+  <div class="modal hidden" id="notes-modal">
+    <div class="modal-content">
+      <header class="modal-header">
+        <h2>Test Notes</h2>
+        <button class="close-button" id="close-notes">✕</button>
+      </header>
+      <section class="modal-body">
+        <textarea id="notes-editor" placeholder="Record observations, disk benchmarks, or anomalies..." rows="10"></textarea>
+        <div class="notes-actions">
+          <button class="primary" id="save-notes">Save Notes</button>
+          <button class="ghost" id="clear-notes">Clear</button>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
